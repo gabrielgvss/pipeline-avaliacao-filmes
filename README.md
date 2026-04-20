@@ -84,25 +84,28 @@ pipeline_avaliacao_filmes/
    source .venv/bin/activate   # Linux/Mac
    ```
 
-### Configuração do MinIO
-
-O projeto utiliza **MinIO** como storage S3 compatível. Configure as credenciais:
+### Configuração de Variáveis de Ambiente
 
 1. **Crie um arquivo `.env`** na raiz do projeto:
+   ```powershell
+   copy .env.example .env  # Windows
+   # ou
+   cp .env.example .env    # Linux/Mac
+   ```
+
+2. **Edite o arquivo `.env` com suas credenciais:**
    ```env
+   # MinIO Credentials
    MINIO_ACCESS_KEY=admin
    MINIO_SECRET_KEY=admin123
+   MINIO_URL=http://localhost:9000
+   
+   # APIs Externas (quando implementado)
+   OMDB_API_KEY=sua_chave_omdb
+   TMDB_API_KEY=sua_chave_tmdb
    ```
 
-2. **Inicie os serviços Docker:**
-   ```bash
-   docker-compose up -d
-   ```
-
-3. **Acesse o MinIO Console:**
-   - URL: http://localhost:9001
-   - Usuário: `admin`
-   - Senha: `admin123`
+> ⚠️ **Importante:** Nunca commit o arquivo `.env` no Git. Ele está no `.gitignore` para proteção.
 
 ## 🔧 Como Usar
 
@@ -202,19 +205,27 @@ python
 - **Porta API S3:** 9000
 - **Dados persistidos em:** `./object-storage/`
 
-## 📝 Variáveis de Ambiente
+## 📝 Configuração de Variáveis de Ambiente
 
-Crie um arquivo `.env` com as seguintes variáveis:
+Crie um arquivo `.env` baseado em `.env.example`:
 
+```powershell
+copy .env.example .env  # Windows
+```
+
+Edite com suas credenciais:
 ```env
 # MinIO Credentials
 MINIO_ACCESS_KEY=admin
 MINIO_SECRET_KEY=admin123
+MINIO_URL=http://localhost:9000
 
-# AWS S3 (se usar produção)
-# AWS_ACCESS_KEY_ID=seu_acess_key
-# AWS_SECRET_ACCESS_KEY=sua_secret_key
+# APIs Externas (quando implementado)
+OMDB_API_KEY=sua_chave_omdb
+TMDB_API_KEY=sua_chave_tmdb
 ```
+
+> ⚠️ **Importante:** O arquivo `.env` está no `.gitignore` para proteção. Cada desenvolvedor deve criar seu próprio.
 
 ## 🚢 Próximos Passos
 
