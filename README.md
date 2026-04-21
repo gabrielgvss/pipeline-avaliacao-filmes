@@ -121,7 +121,18 @@ Este comando:
 1. ✅ Baixa o dataset de filmes do Kaggle
 2. ✅ Cria o bucket `movies` no MinIO (se não existir)
 3. ✅ Salva os dados em `s3://movies/bronze/movie_titles.parquet`
+### Passo 2: Executar a Transformação
 
+Transforme os dados da camada Bronze para Silver (filtrando apenas títulos):
+
+```bash
+uv run python -m scripts.transform.movie_titles_filter
+```
+
+Este comando:
+1. ✅ Lê o arquivo da camada Bronze
+2. ✅ Filtra apenas os títulos únicos dos filmes
+3. ✅ Salva em `s3://movies/silver/only_movie_titles.parquet`
 ### Verificar os Dados
 
 Para verificar os dados salvos:
@@ -186,16 +197,31 @@ python
 
 ## 🔍 Scripts Disponíveis
 
-### `scripts/extract/kaggle_extraction.py`
-- **Função:** Extrai dados de filmes do Kaggle
-- **Output:** Arquivo Parquet em S3
-- **Uso:** `uv run python -m scripts.extract.kaggle_extraction`
+### Extração (Extract)
 
-### `scripts/create_bucket.py`
+#### `scripts/extract/kaggle_extraction.py`
+- **Função:** Extrai dados de filmes do Kaggle
+- **Input:** Dataset Kaggle (abdallahwagih/movies)
+- **Output:** `s3://movies/bronze/movie_titles.parquet`
+- **Uso:** `uv run python -m scripts.extract.kaggle_extraction`
+- **Descrição:** Faz download do dataset do Kaggle e salva em formato Parquet na camada Bronze
+
+### Transformação (Transform)
+
+#### `scripts/transform/movie_titles_filter.py`
+- **Função:** Filtra apenas os títulos dos filmes da dataset
+- **Input:** `s3://movies/bronze/movie_titles.parquet` (Bronze)
+- **Output:** `s3://movies/silver/only_movie_titles.parquet` (Silver)
+- **Uso:** `uv run python -m scripts.transform.movie_titles_filter`
+- **Descrição:** Transforma dados da camada Bronze para Silver, selecionando apenas o campo de título e removendo duplicatas
+
+### Utilitários
+
+#### `scripts/create_bucket.py`
 - **Função:** Gerencia buckets S3
 - **Funções principais:**
-  - `create_bucket()`: Cria um novo bucket
-  - `ensure_bucket_exists()`: Garante que um bucket existe
+  - `create_bucket(bucket_name, s3)`: Cria um novo bucket
+  - `ensure_bucket_exists(bucket_name, s3)`: Garante que um bucket existe
 
 ## 🐳 Serviços Docker
 
@@ -292,6 +318,18 @@ Este projeto está sob a licença MIT.
 ## 📞 Suporte
 
 Para problemas, dúvidas ou sugestões, abra uma issue no repositório.
+
+## 📈 Status do Projeto
+
+| Componente | Status | Descrição |
+|-----------|--------|----------|
+| Extract (Kaggle) | ✅ Implementado | Extração de dados do Kaggle para Bronze |
+| Transform (Silver) | ✅ Iniciado | Filtragem de títulos de filmes |
+| Load (Gold) | 🔜 Em desenvolvimento | Agregações e dados prontos para BI |
+| API OMDB | 🔜 Planejado | Integração para ratings |
+| API TMDB | 🔜 Planejado | Integração para informações de filme |
+| Airflow DAGs | 🔜 Planejado | Orquestração do pipeline |
+| Testes | 🔜 Planejado | Testes unitários e integração |
 
 ---
 

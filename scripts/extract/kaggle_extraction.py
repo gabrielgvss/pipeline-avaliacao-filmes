@@ -42,42 +42,42 @@ def extract_and_save_movie_titles(dataset_name: str, output_path: str, s3, stora
         logger.error(f"An error occurred: {e}")
         raise
 
-# Test
-if __name__ == "__main__":
-    import os
-    import boto3
+# # Test
+# if __name__ == "__main__":
+#     import os
+#     import boto3
 
-    s3 = boto3.client(
-        "s3",
-        endpoint_url="http://localhost:9000",
-        aws_access_key_id="admin",
-        aws_secret_access_key="admin123",
-    )
+#     s3 = boto3.client(
+#         "s3",
+#         endpoint_url="http://localhost:9000",
+#         aws_access_key_id="admin",
+#         aws_secret_access_key="admin123",
+#     )
 
-    storage_options = {
-        "aws_access_key_id": "admin",
-        "aws_secret_access_key": "admin123",
-        "aws_endpoint_url": "http://localhost:9000",
-    }
+#     storage_options = {
+#         "aws_access_key_id": "admin",
+#         "aws_secret_access_key": "admin123",
+#         "aws_endpoint_url": "http://localhost:9000",
+#     }
 
-    dataset_name = "abdallahwagih/movies"
-    output_path = "s3://movies/bronze/movie_titles.parquet"
+#     dataset_name = "abdallahwagih/movies"
+#     output_path = "s3://movies/bronze/movie_titles.parquet"
 
-    extract_and_save_movie_titles(dataset_name, output_path, s3, storage_options)
+#     extract_and_save_movie_titles(dataset_name, output_path, s3, storage_options)
 
-    response = s3.list_objects_v2(Bucket="movies")
+#     response = s3.list_objects_v2(Bucket="movies")
 
-import polars as pl
-import os
+# import polars as pl
+# import os
 
-df = pl.read_parquet(
-    "s3://movies/bronze/movie_titles.parquet",
-    storage_options={
-        "aws_access_key_id": "admin",
-        "aws_secret_access_key": "admin123",
-        "aws_endpoint_url": "http://localhost:9000",
-    }
-)
+# df = pl.read_parquet(
+#     "s3://movies/bronze/movie_titles.parquet",
+#     storage_options={
+#         "aws_access_key_id": "admin",
+#         "aws_secret_access_key": "admin123",
+#         "aws_endpoint_url": "http://localhost:9000",
+#     }
+# )
 
-print(df.head())
-print(df.shape)
+# print(df.head())
+# print(df.shape)
